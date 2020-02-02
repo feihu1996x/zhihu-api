@@ -1,0 +1,17 @@
+{
+  "name": "zhihu-api",
+  "version": "1.0.0",
+  "description": "仿知乎 RESTful API",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "author": "feihu1996x",
+  "license": "MIT",
+  "dependencies": {
+    "koa": "^2.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
