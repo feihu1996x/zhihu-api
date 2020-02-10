@@ -17,9 +17,13 @@ class UsersCtl {
         ctx.status = 204;
     }
     find(ctx) {
+        a.b;
         ctx.body = db;
     }
     findById(ctx) {
+        if (db.length <= ctx.params.id * 1) {
+            ctx.throw(412, '先决条件失败，id大于等于数组长度了');
+        }
         ctx.body = db[ctx.params.id * 1];
     }
     update(ctx) {
