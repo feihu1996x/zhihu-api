@@ -21,8 +21,8 @@ class UsersCtl {
         ctx.body = db;
     }
     findById(ctx) {
-        if (db.length <= ctx.params.id * 1) {
-            ctx.throw(412, '先决条件失败，id大于等于数组长度了');
+        if (db.length <= ctx.params.id) {
+            ctx.throw(412);
         }
         ctx.body = db[ctx.params.id * 1];
     }
