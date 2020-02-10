@@ -1,60 +1,45 @@
-const db = [
-    {
-        name: '李雷',
-    },
-    {
-        name: '韩梅梅',
-    },
-];
+const User = require('../models/users');
 
 class UsersCtl {
-    create(ctx) {
+    async create(ctx) {
         ctx.verifyParams({
             name: {
                 type: 'string',
                 required: true,
-            },
-            age: {
-                type: 'number',
-                required: false,
             }
         });
-        db.push(ctx.request.body);
-        ctx.body = ctx.request.body;
+        const user = await new User(ctx.request.body).save();
+        ctx.body = user;
     }
-    delete(ctx) {
-        if (db.length <= ctx.params.id) {
-            ctx.throw(412);
+    async delete(ctx) {
+        const user = await User.findByIdAndRemove(ctx.params.id);
+        if (!user) {
+            ctx.throw(404, '用户不存在');
         }
-        db.splice(ctx.params.id * 1, 1);
         ctx.status = 204;
     }
-    find(ctx) {
-        a.b;
-        ctx.body = db;
+    async find(ctx) {
+        ctx.body = await User.find();
     }
-    findById(ctx) {
-        if (db.length <= ctx.params.id) {
-            ctx.throw(412);
+    async findById(ctx) {
+        const user = await User.findById(ctx.params.id);
+        if (!user) {
+            ctx.throw(404, '用户不存在');
         }
-        ctx.body = db[ctx.params.id * 1];
+        ctx.body = user;
     }
-    update(ctx) {
-        if (db.length <= ctx.params.id) {
-            ctx.throw(412);
-        }
+    async update(ctx) {
         ctx.verifyParams({
             name: {
                 type: 'string',
                 required: false,
-            },
-            age: {
-                type: 'number',
-                required: false,
             }
         });
-        db[ctx.params.id * 1] = ctx.request.body;
-        ctx.body = ctx.request.body;
+        const user = await User.findByIdAndUpdate(ctx.params.id, ctx.request.body);
+        if (!user) {
+            ctx.throw(404, '用户不存在');
+        }
+        ctx.body = user;
     }
 }
 
