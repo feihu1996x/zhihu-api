@@ -12,6 +12,11 @@ const {
     update,
     login,
     checkOwner,
+    listFollowings,
+    listFollowers,
+    checkUserExist,
+    follow,
+    unFollow,
 } = require('../controllers/users');
 const { secret } = require('../config');
 
@@ -23,5 +28,9 @@ router.get('/', find);
 router.get('/:id', findById);
 router.patch('/:id', auth, checkOwner, update);
 router.post('/login', login);
+router.get('/:id/followings', listFollowings);
+router.get('/:id/followers', listFollowers);
+router.put('/following/:id', auth, checkUserExist, follow);
+router.delete('/following/:id', auth, checkUserExist, unFollow);
 
 module.exports = router;
