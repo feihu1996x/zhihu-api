@@ -18,19 +18,28 @@ const {
     follow,
     unFollow,
 } = require('../controllers/users');
+const {
+    listFollowingTopics,
+    followTopic,
+    unFollowTopic,
+    checkTopicExist,
+} = require('../controllers/topics');
 const { secret } = require('../config');
 
-const auth = koaJwt({ secret })
+const auth = koaJwt({ secret });
 
 router.post('/', create);
-router.delete('/:id', auth, checkOwner, del);
+router.delete('/:id', auth, checkUserExist, checkOwner, del);
 router.get('/', find);
-router.get('/:id', findById);
-router.patch('/:id', auth, checkOwner, update);
+router.get('/:id', checkUserExist, findById);
+router.patch('/:id', auth, checkUserExist, checkOwner, update);
 router.post('/login', login);
-router.get('/:id/followings', listFollowings);
-router.get('/:id/followers', listFollowers);
+router.get('/:id/followings', checkTopicExist, listFollowings);
+router.get('/:id/followers', checkUserExist, listFollowers);
 router.put('/following/:id', auth, checkUserExist, follow);
 router.delete('/following/:id', auth, checkUserExist, unFollow);
+router.get('/:id/followingtopics', listFollowingTopics);
+router.put('/followingTopics/:id', auth, checkTopicExist, followTopic);
+router.delete('/followingTopics/:id', auth, checkTopicExist, unFollowTopic);
 
 module.exports = router;

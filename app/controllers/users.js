@@ -24,22 +24,34 @@ class UsersCtl {
         ctx.body = user;
     }
     async delete(ctx) {
-        const user = await User.findByIdAndRemove(ctx.params.id);
-        if (!user) {
-            ctx.throw(404, '用户不存在');
-        }
+        await User.findByIdAndRemove(ctx.params.id);
         ctx.status = 204;
     }
     async find(ctx) {
-        ctx.body = await User.find();
+        let { page = 1, perPage = 10 } = ctx.query;
+        page = Math.max(page * 1, 1) - 1;
+        perPage = Math.max(perPage * 1, 1);
+        ctx.body = await User
+            .find({ name: new RegExp(ctx.query.q) })
+            .limit(perPage)
+            .skip(page * perPage);
     }
     async findById(ctx) {
         const { fields = '' } = ctx.query;
         const selectFields = fields.split(';').filter(f => f).map(f => ' +' + f).join('');
-        const user = await User.findById(ctx.params.id).select(selectFields);
-        if (!user) {
-            ctx.throw(404, '用户不存在');
-        }
+        const populateStr = fields.split(';').filter(f => f).map(f => {
+            if ('employments' === f) {
+                return 'employments.company employments.job';
+            }
+            if ('educations' === f) {
+                return 'educations.school education.major';
+            }
+            return f;
+        }).join(' ');
+        const user = await User
+            .findById(ctx.params.id)
+            .select(selectFields)
+            .populate(populateStr);
         ctx.body = user;
     }
     async checkOwner(ctx, next) {
@@ -91,9 +103,6 @@ class UsersCtl {
             }
         });
         const user = await User.findByIdAndUpdate(ctx.params.id, ctx.request.body);
-        if (!user) {
-            ctx.throw(404, '用户不存在');
-        }
         ctx.body = user;
     }
     async login(ctx) {
@@ -117,11 +126,8 @@ class UsersCtl {
     }
     async listFollowings(ctx) {
         const user = await User.findById(ctx.params.id)
-        .select('+following')
-        .populate('following');
-        if (!user) {
-            ctx.throw(404, '用户不存在')
-        }
+            .select('+following')
+            .populate('following');
         ctx.body = user.following;
     }
     async listFollowers(ctx) {

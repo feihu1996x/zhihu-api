@@ -35,23 +35,27 @@ const userSchema = new Schema({
     locations: {
         type: [
             {
-                type: String,
+                type: Schema.Types.ObjectId,
+                ref: 'Topic',
             },
         ],
         select: false,
     },
     business: {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: 'Topic',
         select: false,
     },
     employments: {
         type: [
             {
                 company: {
-                    type: String,
+                    type: Schema.Types.ObjectId,
+                    ref: 'Topic',
                 },
                 job: {
-                    type: String,
+                    type: Schema.Types.ObjectId,
+                    ref: 'Topic',
                 }
             },
         ],
@@ -61,10 +65,12 @@ const userSchema = new Schema({
         type: [
             {
                 school: {
-                    type: String,
+                    type: Schema.Types.ObjectId,
+                    ref: 'Topic',
                 },
                 major: {
-                    type: String,
+                    type: Schema.Types.ObjectId,
+                    ref: 'Topic',
                 },
                 diploma: {
                     type: Number,
@@ -88,6 +94,15 @@ const userSchema = new Schema({
             }
         ],
         select: false,
+    },
+    followingTopics: {
+        type: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Topic'
+            }
+        ],
+        select: false,        
     }
 });
 
