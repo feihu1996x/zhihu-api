@@ -1,6 +1,6 @@
 const Question = require('../models/questions');
 
-class QuestionCtl {
+class QuestionsCtl {
     async create(ctx) {
         ctx.verifyParams({
             title: {
@@ -84,4 +84,4 @@ class QuestionCtl {
     }
 }
 
-module.exports = new QuestionCtl();
+module.exports = new QuestionsCtl();
