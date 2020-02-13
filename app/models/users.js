@@ -131,6 +131,8 @@ const userSchema = new Schema({
         ],
         select: false,
     }
+}, {
+    timestamps: true,
 });
 
 module.exports = model('User', userSchema);

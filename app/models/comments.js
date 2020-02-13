@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 
 const { Schema, model } = mongoose;
-
-const answerSchema = new Schema({
+const commentSchema = new Schema({
     __v: {
         type: Number,
         select: false,
@@ -11,7 +10,7 @@ const answerSchema = new Schema({
         type: String,
         required: true,
     },
-    answerer: {
+    commentator: {
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true,
@@ -22,13 +21,21 @@ const answerSchema = new Schema({
         ref: 'Question',
         required: true,
     },
-    voteCount: {
-        type: Number,
+    answerId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Answer',
         required: true,
-        default: 0,
+    },
+    rootCommentId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Comment',
+    },
+    replyTo: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
     }
 }, {
     timestamps: true,
 });
 
-module.exports = model('Answer', answerSchema);
+module.exports = model('Comment', commentSchema);

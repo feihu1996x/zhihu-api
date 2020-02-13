@@ -18,6 +18,8 @@ const topicSchema = new Schema({
         type: String,
         select: false,
     }
+}, {
+    timestamps: true,
 });
 
 module.exports = model('Topic', topicSchema);
