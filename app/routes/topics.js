@@ -12,6 +12,7 @@ const {
     update,
     listTopicsFollowers,
     checkTopicExist,
+    listTopicsQuestions,
 } = require('../controllers/topics');
 const { secret } = require('../config');
 
@@ -22,5 +23,6 @@ router.get('/', find);
 router.get('/:id', checkTopicExist, findById);
 router.patch('/:id', auth, checkTopicExist, update);
 router.get('/:id/followers', checkTopicExist, listTopicsFollowers);
+router.get('/:id/questions', checkTopicExist, listTopicsQuestions);
 
 module.exports = router;
