@@ -1,6 +1,15 @@
 # zhihu-api
 仿知乎 RESTful API
 
+## Tech Stack
+
+- Node.js
+- Koa2
+- MongoDB
+- Postman
+- JWT
+- 阿里云
+
 ## Build And Setup
 
 ```bash
